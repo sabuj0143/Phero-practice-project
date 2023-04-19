@@ -1,0 +1,12 @@
+.main-header a{
+    text-decoration: none;
+    margin-right: 15px;
+    color: black;
+}
+.main-header{
+    position: sticky;
+    top: 0;
+    background-color: beige;
+    color: black;
+    padding: 10px;
+}
