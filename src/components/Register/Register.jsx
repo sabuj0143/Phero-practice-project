@@ -8,7 +8,7 @@ import { AuthContext } from '../../AuthProvider/AuthProvider';
 const Register = () => {
 
     const [error, setError] = useState('');
-    const { createUser } = useContext(AuthContext);
+    const { user, createUser, signIn, signInWithGoogle } = useContext(AuthContext);
 
     const handleSignUp = (event) => {
         event.preventDefault();
@@ -24,26 +24,38 @@ const Register = () => {
             setError('Your Password Did Not Match');
             return;
         }
-        else if(`!(?=.*[!@#$&*])`){
-            setError('Password must be Special Character');
+        // validate if elseif using to password condition.
+        else if (!/(?=.*[A-Z])/.test(password)) {
+            setError('places One Uppercase add him.');
             return;
         }
-        else if(`!(?=.*[0-9].*[0-9])`){
-            setError('Password must be 9 characters or longer');
+        else if (!/(?=.*[!@#$%^&*])/.test(password)) {
+            setError('Assert a string has at least one special character');
             return;
         }
-        else if(`!(?=(.*[A-Z]){2,})`){
-            setError('Password must be One uppercase letters');
+        else if (!/(?=.*[0-9])/.test(password)) {
+            setError('Assert a string has at least one number');
             return;
         }
         createUser(email, password)
             .then(result => {
                 const loggedUser = result.user
                 console.log(loggedUser);
+                form.reset();
             })
             .catch(error => {
                 console.log(error);
                 setError(error.massage)
+            })
+    }
+    const handleSignInGoogle = () => {
+        signInWithGoogle()
+            .then(result => {
+                const loggedUser = result.user
+                console.log(loggedUser);
+            })
+            .catch(error => {
+                console.log(error);
             })
     }
     return (
@@ -72,7 +84,7 @@ const Register = () => {
                     <p><small>Already have an account? <Link to="/login">Login</Link></small></p>
                 </div>
                 <div className='link-div'>
-                    <Button className='my-2' variant="outline-primary"> <FaGoogle /> Login with Google</Button>
+                    <Button onClick={handleSignInGoogle} className='my-2' variant="outline-primary"> <FaGoogle /> Login with Google</Button>
                     <Button variant="outline-secondary"> <FaGithub /> Login with Github</Button>
                 </div>
             </div>
