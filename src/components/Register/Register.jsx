@@ -4,14 +4,17 @@ import { FaGoogle, FaGithub } from 'react-icons/fa';
 import './Register.css'
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../AuthProvider/AuthProvider';
+import { sendEmailVerification } from 'firebase/auth';
 
 const Register = () => {
 
     const [error, setError] = useState('');
-    const { user, createUser, signIn, signInWithGoogle } = useContext(AuthContext);
+    const [success, setSuccess] = useState('');
+    const { user, createUser, signIn, signInWithGoogle, signInWithGithub } = useContext(AuthContext);
 
     const handleSignUp = (event) => {
         event.preventDefault();
+        setSuccess('');
 
         const form = event.target;
         const email = form.email.value;
@@ -41,6 +44,8 @@ const Register = () => {
             .then(result => {
                 const loggedUser = result.user
                 console.log(loggedUser);
+                setSuccess('User has Create successFully');
+                handleSendEmailVerification(result.user)
                 form.reset();
             })
             .catch(error => {
@@ -58,6 +63,24 @@ const Register = () => {
                 console.log(error);
             })
     }
+    const handleSignInGithub2 = () => {
+        signInWithGithub()
+            .then(result => {
+                const loggedUser = result.user
+                console.log(loggedUser);
+            })
+            .catch(error => {
+                console.log(error);
+            })
+    }
+    const handleSendEmailVerification = (user) => {
+        sendEmailVerification(user)
+            .then(result => {
+                console.log(result);
+                alert('Places Verification your email Address')
+            })
+    }
+
     return (
         <Container>
             <div className='form-container'>
@@ -76,7 +99,9 @@ const Register = () => {
                         <input type="password" name="confirm" id="" required />
                     </div>
                     <div>
-                        <p className='text-error'>{error}</p>
+                        {/* Show the not the current from info */}
+                        <p className='text-danger'>{error}</p>
+                        <p className='text-success'>{success}</p>
                     </div>
                     <input className='btn-submit' type="submit" value="Sign Up" />
                 </form>
@@ -85,7 +110,7 @@ const Register = () => {
                 </div>
                 <div className='link-div'>
                     <Button onClick={handleSignInGoogle} className='my-2' variant="outline-primary"> <FaGoogle /> Login with Google</Button>
-                    <Button variant="outline-secondary"> <FaGithub /> Login with Github</Button>
+                    <Button onClick={handleSignInGithub2} variant="outline-secondary"> <FaGithub /> Login with Github</Button>
                 </div>
             </div>
         </Container>
