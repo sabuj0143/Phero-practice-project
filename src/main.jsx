@@ -14,6 +14,7 @@ import Login from './components/Login/Login';
 import Register from './components/Register/Register';
 import JobsApply from './components/JobsApply/JobsApply';
 import AuthProvider from './AuthProvider/AuthProvider';
+import PrivateRoute from './routes/PrivateRoute';
 
 const router = createBrowserRouter([
   {
@@ -38,7 +39,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/jobs',
-        element: <JobsApply></JobsApply>
+        element: <PrivateRoute><JobsApply></JobsApply></PrivateRoute>
       },
       {
         path: '/login',
