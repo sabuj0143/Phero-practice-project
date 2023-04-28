@@ -6,11 +6,15 @@ import { useContext } from 'react';
 import { FaGoogle, FaGithub } from 'react-icons/fa';
 import { AuthContext } from '../../AuthProvider/AuthProvider';
 import { useState } from 'react';
+import eye from '../../assets/eye.png'
+import hide from '../../assets/hide.png'
+
 
 const Login = () => {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const [user, setUser] = useState(null);
+    const [control, setControl] = useState(false);
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -83,9 +87,17 @@ const Login = () => {
                         <label htmlFor="email">Email</label>
                         <input type="email" name="email" id="" required />
                     </div>
-                    <div className="form-control">
+                    <div className="form-control position-relative">
                         <label htmlFor="password">Password</label>
-                        <input type="password" name="password" id="" required />
+                        <input type={control ? 'text' : 'password'} name="password" id="" required />
+
+                        <div onClick={() => { setControl(!control) }} className='monsur position-absolute'>
+                            {
+                                control ?
+                                    <img className='w-24' style={{ width: '24px' }} src={hide} alt="" /> :
+                                    <img className='w-24' style={{ width: '24px' }} src={eye} alt="" />
+                            }
+                        </div>
                     </div>
                     <div>
                         {/* Show the not the current from info */}

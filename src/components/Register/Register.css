@@ -6,3 +6,9 @@
     font-size: 15px;
     letter-spacing: 0.0025em;
 }
+.monsur{
+    top: 50px;
+    transform: translateY(-30%);
+    right: 30px;
+    cursor: pointer;
+}

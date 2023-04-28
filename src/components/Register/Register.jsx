@@ -5,11 +5,14 @@ import './Register.css'
 import { Link, useLocation } from 'react-router-dom';
 import { AuthContext } from '../../AuthProvider/AuthProvider';
 import { sendEmailVerification } from 'firebase/auth';
+import eye from '../../assets/eye.png'
+import hide from '../../assets/hide.png'
 
 const Register = () => {
 
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
+    const [control, setControl] = useState(false);
 
     const { user, createUser, signIn, signInWithGoogle, signInWithGithub } = useContext(AuthContext);
 
@@ -93,13 +96,28 @@ const Register = () => {
                         <label htmlFor="email">Email</label>
                         <input type="email" name="email" id="" required />
                     </div>
-                    <div className="form-control">
+                    <div className="form-control position-relative">
                         <label htmlFor="password">Password</label>
-                        <input type="password" name="password" id="" required />
+                        <input type={control ? 'text' : 'password'} name="password" id="" required />
+                        <div onClick={() => { setControl(!control) }} className='monsur position-absolute'>
+                            {
+                                control ?
+                                    <img className='w-24' style={{ width: '24px' }} src={hide} alt="" /> :
+                                    <img className='w-24' style={{ width: '24px' }} src={eye} alt="" />
+                            }
+                        </div>
                     </div>
-                    <div className="form-control">
+                    <div className="form-control position-relative">
                         <label htmlFor="confirm">Confirm Password</label>
-                        <input type="password" name="confirm" id="" required />
+                        <input type={control ? 'text' : 'password'} name="confirm" id="" required />
+
+                        <div onClick={() => { setControl(!control) }} className='monsur position-absolute'>
+                            {
+                                control ?
+                                    <img className='w-24' style={{ width: '24px' }} src={hide} alt="" /> :
+                                    <img className='w-24' style={{ width: '24px' }} src={eye} alt="" />
+                            }
+                        </div>
                     </div>
                     <div>
                         {/* Show the not the current from info */}
