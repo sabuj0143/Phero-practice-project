@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { Button, Container } from 'react-bootstrap';
 import { FaGoogle, FaGithub } from 'react-icons/fa';
 import './Register.css'
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { AuthContext } from '../../AuthProvider/AuthProvider';
 import { sendEmailVerification } from 'firebase/auth';
 
@@ -10,6 +10,7 @@ const Register = () => {
 
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
+
     const { user, createUser, signIn, signInWithGoogle, signInWithGithub } = useContext(AuthContext);
 
     const handleSignUp = (event) => {
@@ -40,6 +41,7 @@ const Register = () => {
             setError('Assert a string has at least one number');
             return;
         }
+
         createUser(email, password)
             .then(result => {
                 const loggedUser = result.user
@@ -53,6 +55,7 @@ const Register = () => {
                 setError(error.massage)
             })
     }
+
     const handleSignInGoogle = () => {
         signInWithGoogle()
             .then(result => {

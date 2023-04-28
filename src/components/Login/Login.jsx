@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Container } from 'react-bootstrap';
 import './Login.css'
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { FaGoogle, FaGithub } from 'react-icons/fa';
 import { AuthContext } from '../../AuthProvider/AuthProvider';
@@ -10,6 +10,10 @@ import { useState } from 'react';
 const Login = () => {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
+    const [user, setUser] = useState(null);
+
+    const navigate = useNavigate();
+    const location = useLocation();
     // Rcd ta AuthProvider function.............. 
     const { signIn, signInWithGoogle, signInWithGithub } = useContext(AuthContext);
     // console.log(signIn);
@@ -42,12 +46,12 @@ const Login = () => {
         signIn(email, password)
             .then(result => {
                 const loggedUser = result.user
-                console.log(loggedUser);
+                setUser(loggedUser)
                 setSuccess('User has Create successFully');
                 form.reset();
+                navigate(location.state.pathname || "/")
             })
             .catch(error => {
-                console.log(error.massage);
                 setError(error.massage)
             })
     };
@@ -55,10 +59,9 @@ const Login = () => {
         signInWithGoogle()
             .then(result => {
                 const loggedUser = result.user
-                console.log(loggedUser);
             })
             .catch(error => {
-                console.log(error);
+                setError(error.massage);
             })
     }
     const handleSignInGithub = () => {
